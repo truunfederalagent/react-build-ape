@@ -1,0 +1,18 @@
+.pickerContainer{
+    width: 98%;
+    margin: 5px auto auto;
+}
+
+.stepper{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.stepperContainer{
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+p{
+    text-align: center;
+}

@@ -1,0 +1,22 @@
+.frame{
+    position: relative;
+    width: 80vw;
+    max-width: 400px;
+    margin: 20px auto auto;
+    border: 5px solid black;
+    padding-bottom: min(80vw, 400px);
+}
+
+.picked{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.chipContainer{
+    min-height: 35px;
+    width: 98%;
+    margin: 10px auto auto;
+
+}
