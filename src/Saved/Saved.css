@@ -1,0 +1,28 @@
+.savedFrame{
+    position: relative;
+    width: 45vw;
+    max-width: 400px;
+    margin: 10px 10px 10px 0px;
+    border: 3px solid black;
+    padding-bottom: min(45vw, 400px);
+}
+
+.picked{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.savedContainer{
+    width: 98%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: center;
+}
+
+.deleteSaved{
+    float: right;
+}

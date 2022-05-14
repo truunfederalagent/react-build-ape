@@ -16,3 +16,9 @@
 p{
     text-align: center;
 }
+
+.saveContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

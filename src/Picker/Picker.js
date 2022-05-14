@@ -2,8 +2,6 @@ import React from "react";
 import Selector from "../Selector/Selector";
 import {AssetService} from "../AssetService";
 import "./Picker.css"
-import Select from '@mui/material/Select';
-import MenuItem from "@mui/material/MenuItem";
 import {Button, MobileStepper} from "@mui/material";
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -33,6 +31,19 @@ class Picker extends React.Component {
 
         return (
             <div className="pickerContainer">
+                {
+                    (this.props.assets['background'] &&
+                        this.props.assets['fur'] &&
+                        this.props.assets['skin']) ?
+                        (<div className={"saveContainer"}>
+                            <Button
+                                variant={"contained"}
+                                onClick={this.props.saveApe}
+                            >
+                                Save Ape
+                            </Button>
+                        </div>): ""
+                }
                 <div className={"stepper"}>
                     <div className={"stepperContainer"}>
                     <MobileStepper
@@ -56,6 +67,7 @@ class Picker extends React.Component {
                     <div>
                         <p>{AssetService.assets[this.state.activeStep]}</p>
                     </div>
+
                 </div>
                 <Selector
                     assets={AssetService.getFilesByAssetGroup(AssetService.assets[this.state.activeStep])}

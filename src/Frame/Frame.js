@@ -2,25 +2,53 @@ import React from "react";
 import "./Frame.css";
 import Picker from "../Picker/Picker";
 import {AssetService} from "../AssetService";
-import {Button, Chip} from "@mui/material";
+import {Chip} from "@mui/material";
 
 class Frame extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {
-            'background': '',
-            'fur': '',
-            'skin': '',
-            'eyes': '',
-            'line': '',
-            'chest': '',
-            'facial_hair': '',
-            'head': '',
-            'shirt': '',
-            'coat': '',
-            'neck': '',
-            'face': ''
+        this.state = this.props.start ?
+            this.props.start : {
+                "background": '',
+                "fur": '',
+                "skin": '',
+                "eyes": '',
+                "line": '',
+                "chest": '',
+                "shirts": '',
+                "coats": '',
+                "neck": '',
+                "face": '',
+                "facial": '',
+                "mouth": '',
+                "hair": '',
+                "headwear": '',
+                "hand": ''
         }
+    }
+
+    saveApe= () => {
+
+        if (this.state.background && this.state.fur && this.state.skin && this.state.line){
+            fetch(`https://truape.dev/apes`,
+                {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Allow-Origin': '*'
+                    },
+                    body: JSON.stringify({
+                        wallet: this.props.wallet,
+                        items: {...this.state}
+                    })
+                })
+                .then(response => {
+                    this.clearAssets();
+
+                })
+        }
+
     }
 
     onAssetAdd = (category, asset) => {
@@ -44,7 +72,7 @@ class Frame extends React.Component{
     }
     render() {
         console.log('rendering');
-        const keys = Object.keys(this.state).filter(key => this.state[key] != '').sort(key => AssetService.assets.indexOf(key));
+        const keys = Object.keys(this.state).filter(key => this.state[key] !== '').sort(key => AssetService.assets.indexOf(key));
         return (
             <div>
                 <div className="frame">
@@ -73,7 +101,11 @@ class Frame extends React.Component{
                         />
                     })}
                 </div>
-                <Picker onAssetAdd={this.onAssetAdd}/>
+                <Picker
+                    assets={this.state}
+                    onAssetAdd={this.onAssetAdd}
+                    saveApe={this.saveApe}
+                />
             </div>
         )
     }
