@@ -24,7 +24,6 @@ function connectWallet(walletType, onWalletConnectedListener, onWalletDisconnect
     if (walletType === 'MyAlgoWallet'){
         myAlgoConnect.connect({shouldSelectOneAccount: true})
             .then(accounts => {
-                console.log(accounts[0].address)
                 onWalletConnectedListener(accounts[0].address, walletType);
             });
 
@@ -175,7 +174,8 @@ export class App extends React.Component {
             wallet: '',
             apes: null,
             view: 'Frame',
-            assets: {}
+            assets: {},
+            token: ''
         }
 
 
@@ -197,16 +197,20 @@ export class App extends React.Component {
     buildApes = () => {
         const newState = {...this.state};
         newState['view'] = 'Frame';
+        newState['assets'] = {};
         this.setState(newState)
     }
 
     onWalletSelected = (wallet) => {
+        fetch(`https://truape.dev/apes/token/${wallet}`)
+            .then(response => response.text())
+            .then(token => {
+                WalletHelper.checkApes(wallet)
+                    .then(result => {
+                        this.setState({wallet: wallet, apes:result, token: token});
+                    });
+            })
 
-        WalletHelper.checkApes(wallet)
-            .then(result => {
-                console.log(result, result.size);
-                this.setState({wallet: wallet, apes:result});
-            });
     }
 
     onWalletDisconnected = () => {
@@ -228,11 +232,17 @@ export class App extends React.Component {
                 />
                 {
                     this.state.apes &&  this.state.view === 'Frame' && ( (this.state.apes.size > 0) ?
-                    <Frame start={this.state.assets} wallet={this.state.wallet}/> : <p>Wallet Holds No APEs</p> )
+                    <Frame token={this.state.token}
+                           start={this.state.assets}
+                           wallet={this.state.wallet}
+                    /> : <p>Wallet Holds No APEs</p> )
                 }
                 {
                     this.state.apes &&  this.state.view === 'Saved' && ( (this.state.apes.size > 0) ?
-                        <Saved editSaved={this.editSaved} wallet={this.state.wallet}/> : <p>Wallet Holds No APEs</p> )
+                        <Saved token={this.state.token}
+                               editSaved={this.editSaved}
+                               wallet={this.state.wallet}
+                        /> : <p>Wallet Holds No APEs</p> )
                 }
             </div>);
 

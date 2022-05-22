@@ -36,7 +36,8 @@ class Frame extends React.Component{
                     mode: 'cors',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Access-Allow-Origin': '*'
+                        'Access-Allow-Origin': '*',
+                        'Authorization': `Bearer ${this.props.token}`
                     },
                     body: JSON.stringify({
                         wallet: this.props.wallet,
@@ -71,7 +72,6 @@ class Frame extends React.Component{
         this.setState(newState);
     }
     render() {
-        console.log('rendering');
         const keys = Object.keys(this.state).filter(key => this.state[key] !== '').sort(key => AssetService.assets.indexOf(key));
         return (
             <div>
@@ -81,7 +81,7 @@ class Frame extends React.Component{
                         return <img
                             key={this.state[key]}
                             className={"picked"}
-                            src={`https://apes.algorillas.builders/new_${this.state[key]}`}
+                            src={`https://apes.algorillas.builders/${this.state[key]}`}
                             style={{zIndex: AssetService.assets.indexOf(key)}}
                             alt={""}
                             />;

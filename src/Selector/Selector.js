@@ -7,7 +7,6 @@ class Selector extends React.Component{
     static baseUrl = 'https://apes.algorillas.builders';
 
     render() {
-        console.log(this.props);
         const assets = this.props.assets ? this.props.assets : [];
 
         return (
@@ -19,7 +18,7 @@ class Selector extends React.Component{
                         >
                         <img onClick={() => this.props.onAssetSelected(this.props.category, asset) }
 
-                         src={`${Selector.baseUrl}/new_${asset}`}
+                         src={`${Selector.baseUrl}/${asset}`}
                          alt={""}
                         />
                         <p className={"assetLabel"}>{AssetService.getDisplayName(asset)}</p>
