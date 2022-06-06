@@ -34,7 +34,8 @@ class Picker extends React.Component {
                 {
                     (this.props.assets['background'] &&
                         this.props.assets['fur'] &&
-                        this.props.assets['skin']) ?
+                        this.props.assets['skin'] &&
+                        this.props.assets['line']) ?
                         (<div className={"saveContainer"}>
                             <Button
                                 variant={"contained"}
