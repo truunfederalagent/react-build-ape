@@ -21,7 +21,7 @@ class Selector extends React.Component{
                          src={`${Selector.baseUrl}/${asset}`}
                          alt={""}
                         />
-                        <p className={"assetLabel"}>{AssetService.getDisplayName(asset)}</p>
+                        <p className={"assetLabel"}>{AssetService.getDisplayName(asset).substring(0,20)}</p>
                         </div>)})}
             </div>
         )

@@ -1,7 +1,6 @@
 
 export class WalletHelper{
 
-
     static checkApes = (wallet) => {
         const url = `https://algoindexer.algoexplorerapi.io/v2/accounts/${wallet}`;
 
@@ -11,17 +10,32 @@ export class WalletHelper{
                 .then(result => {
                     const ids = new Set(Object.keys(WalletHelper.APES));
                     const owned = new Set();
-                    for (let asset of result['account']['assets']){
-                        if (asset['amount'] === 1 && ids.has(""+asset['asset-id'])){
-                            owned.add(asset['asset-id']);
+                    try {
+                        for (let asset of result['account']['assets']){
+                            if (asset['amount'] === 1 && ids.has(""+asset['asset-id'])){
+                                owned.add(asset['asset-id']);
+                            }
                         }
+                        res(owned);
+                    } catch(err){
+                        rej('Too many assets')
                     }
-                    res(owned);
+
                 });
         })
 
     }
 
+    static checkApprovedWallet = (wallet) => {
+        let approved = [
+                'RYAMX6ZCK3PDTLYFQEXXBIH7CIOXEYPSNZIBVWEKDVAU7ROHSYY5FA2GTY',
+                'TTI3LNCRUT3LG6CUUGVLYRRDTH65ZSOBMMY672QL2XW3U5HGZKEDGWYSF4',
+                'CUB6FFX6LPYCIN7J3JMBO7F4FJXD3TNG2RKUSBL5FOFQDYPQLUWO3TKRXY'
+            ]
+
+        return approved.indexOf(wallet) > -1;
+
+    }
 
     static APES = {
         "637429399": "APEs #1",
@@ -578,7 +592,8 @@ export class WalletHelper{
         "637547703": "APEs #552",
         "637547930": "APEs #553",
         "637548219": "APEs #554",
-        "637548388": "APEs #555"
+        "637548388": "APEs #555",
+        "700107066": "APEsC#3"
     }
 }
 

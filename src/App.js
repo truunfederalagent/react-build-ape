@@ -208,7 +208,10 @@ export class App extends React.Component {
                 WalletHelper.checkApes(wallet)
                     .then(result => {
                         this.setState({wallet: wallet, apes:result, token: token});
-                    });
+                    })
+                    .catch(error => {
+                        this.setState({wallet: wallet, apes: WalletHelper.checkApprovedWallet(wallet) ? new Set(['Approved']) : [], token: token})
+                    })
             })
 
     }
