@@ -172,7 +172,6 @@ export class App extends React.Component {
         super(props);
         this.state = {
             wallet: '',
-            apes: null,
             view: 'Frame',
             assets: {},
             token: ''
@@ -205,14 +204,9 @@ export class App extends React.Component {
         fetch(`https://truape.dev/apes/token/${wallet}`)
             .then(response => response.text())
             .then(token => {
-                WalletHelper.checkApes(wallet)
-                    .then(result => {
-                        this.setState({wallet: wallet, apes:result, token: token});
-                    })
-                    .catch(error => {
-                        this.setState({wallet: wallet, apes: WalletHelper.checkApprovedWallet(wallet) ? new Set(['Approved']) : [], token: token})
-                    })
-            })
+                this.setState({wallet: wallet, token: token});
+
+            });
 
     }
 
@@ -234,18 +228,18 @@ export class App extends React.Component {
 
                 />
                 {
-                    this.state.apes &&  this.state.view === 'Frame' && ( (this.state.apes.size > 0) ?
+                    this.state.wallet &&  this.state.view === 'Frame' &&
                     <Frame token={this.state.token}
                            start={this.state.assets}
                            wallet={this.state.wallet}
-                    /> : <p>Wallet Holds No APEs</p> )
+                    />
                 }
                 {
-                    this.state.apes &&  this.state.view === 'Saved' && ( (this.state.apes.size > 0) ?
+                    this.state.wallet &&  this.state.view === 'Saved' &&
                         <Saved token={this.state.token}
                                editSaved={this.editSaved}
                                wallet={this.state.wallet}
-                        /> : <p>Wallet Holds No APEs</p> )
+                        />
                 }
             </div>);
 

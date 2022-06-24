@@ -65,39 +65,7 @@ class Saved extends React.Component {
             })
     }
 
-    requestRebirth = (apeId) => {
-        const url = `https://truape.dev/apes/rebirth/${this.props.wallet}/${apeId}`
-        fetch(url,{
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-            'Content-Type': 'application/json',
-                'Access-Allow-Origin': '*',
-                'Authorization': `Bearer ${this.props.token}`
-            }})
-            .then(response => {
 
-                this.setState({savedApes: this.state.savedApes, rebirthed: apeId})
-
-            })
-    }
-
-    cancelRebirth = () => {
-        fetch(`https://truape.dev/apes/rebirth/${this.props.wallet}`,
-            {
-                method: 'DELETE',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Allow-Origin': '*',
-                    'Authorization': `Bearer ${this.props.token}`
-                },
-
-            })
-            .then(response => {
-                this.setState({savedApes: this.state.savedApes, rebirthed: -1})
-            })
-    }
     deleteSaved = (index) => {
         const apeId = this.state.savedApes[index][0]
         fetch(`https://truape.dev/apes/${this.props.wallet}/${apeId}`,
@@ -128,34 +96,14 @@ class Saved extends React.Component {
                             <div>
                                 <div onClick={() => this.editSaved(index)}>
                                     <SavedApe
-                                        chosen={ this.state.rebirthed === ape[0] }
                                         key={`saved${index}`}
                                         saved={ape}
                                     />
                                 </div>
+
+
                                 {
-                                    (this.state.rebirthed === -1) && <Button
-                                        key={`rebirth${index}`}
-                                        className={"rebirthButton"}
-                                        variant={"contained"}
-                                        onClick={() => this.requestRebirth(ape[0])}
-                                    >
-                                        Rebirth Ape
-                                    </Button>
-                                }
-                                {
-                                    (this.state.rebirthed === ape[0]) &&
-                                    <Button
-                                        key={`cancelrebirth${index}`}
-                                        className={"rebirthButton"}
-                                        variant={"contained"}
-                                        onClick={() => this.cancelRebirth()}
-                                    >
-                                        Cancel Rebirth
-                                    </Button>
-                                }
-                                {
-                                    (this.state.rebirthed !== ape[0]) && <IconButton
+                                    <IconButton
                                         key={`delete${index}`}
                                         onClick={() => this.deleteSaved(index)}
                                         className={"deleteSaved"}
