@@ -33,7 +33,7 @@ class Saved extends React.Component {
         super(props);
         this.state = {
             savedApes: [],
-            rebirthed: -1
+            requested: []
         }
     }
 
@@ -60,8 +60,7 @@ class Saved extends React.Component {
         })
             .then(response => response.json())
             .then(result => {
-
-                this.setState({savedApes: result.saved, rebirthed: result.ape_id})
+                this.setState({savedApes: result.saved, requested: result.requested})
             })
     }
 
@@ -76,14 +75,16 @@ class Saved extends React.Component {
                 'Authorization': `Bearer ${this.props.token}`
             }})
             .then(response => {
-
-                this.setState({savedApes: this.state.savedApes, rebirthed: apeId})
+                const requested = [...this.state.requested, apeId]
+                this.setState({savedApes: this.state.savedApes, requested: requested})
 
             })
     }
 
-    cancelRebirth = () => {
-        fetch(`https://truape.dev/apes/rebirth/${this.props.wallet}`,
+    cancelRebirth = (index) => {
+        const apeId = this.state.savedApes[index][0];
+        const requestIndex = this.state.requested.indexOf(apeId);
+        fetch(`https://truape.dev/apes/rebirth/${this.props.wallet}/${apeId}`,
             {
                 method: 'DELETE',
                 mode: 'cors',
@@ -95,8 +96,11 @@ class Saved extends React.Component {
 
             })
             .then(response => {
-                this.setState({savedApes: this.state.savedApes, rebirthed: -1})
+                const requested = [...this.state.requested];
+                requested.splice(requestIndex, 1);
+                this.setState({savedApes: this.state.savedApes, requested: requested})
             })
+
     }
     deleteSaved = (index) => {
         const apeId = this.state.savedApes[index][0]
@@ -128,13 +132,13 @@ class Saved extends React.Component {
                             <div>
                                 <div onClick={() => this.editSaved(index)}>
                                     <SavedApe
-                                        chosen={ this.state.rebirthed === ape[0] }
+                                        chosen={ this.state.requested.indexOf(ape[0]) >= 0 }
                                         key={`saved${index}`}
                                         saved={ape}
                                     />
                                 </div>
                                 {
-                                    (this.state.rebirthed === -1) && <Button
+                                    (this.state.requested.indexOf(ape[0]) == -1) && <Button
                                         key={`rebirth${index}`}
                                         className={"rebirthButton"}
                                         variant={"contained"}
@@ -144,18 +148,18 @@ class Saved extends React.Component {
                                     </Button>
                                 }
                                 {
-                                    (this.state.rebirthed === ape[0]) &&
+                                    (this.state.requested.indexOf(ape[0]) >= 0) &&
                                     <Button
                                         key={`cancelrebirth${index}`}
                                         className={"rebirthButton"}
                                         variant={"contained"}
-                                        onClick={() => this.cancelRebirth()}
+                                        onClick={() => this.cancelRebirth(index)}
                                     >
                                         Cancel Rebirth
                                     </Button>
                                 }
                                 {
-                                    (this.state.rebirthed !== ape[0]) && <IconButton
+                                    (this.state.requested.indexOf(ape[0]) === -1) && <IconButton
                                         key={`delete${index}`}
                                         onClick={() => this.deleteSaved(index)}
                                         className={"deleteSaved"}

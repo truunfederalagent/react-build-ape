@@ -580,7 +580,8 @@ export class AssetService {
         ],
         "chest": [
             "assets/chest/ChestHair%23150.png",
-            "assets/chest/HarambeHeartTattoo%2350.png"
+            "assets/chest/HarambeHeartTattoo%2350.png",
+            "assets/chest/NoRagretsTattoo.png"
         ],
         "eyes": [
             "assets/eyes/07AngryEyes/AngryEyesNuclear.png",
